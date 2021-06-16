@@ -38,14 +38,16 @@ function useProvideAuth() {
         throw error.message;
       });
   };
-  const signinWithFacebook = () => {
+
+  const signinWithEmail = (email, password) => {
     return firebase
       .auth()
-      .signInWithPopup(new firebase.auth.FacebookAuthProvider())
+      .createUserWithEmailAndPassword(email, password)
       .then((response) => {
         handleUser(response.user);
       });
   };
+
   const signinWithGoogle = () => {
     return firebase
       .auth()
@@ -79,7 +81,7 @@ function useProvideAuth() {
     user,
     signinWithGithub,
     signinWithGoogle,
-    signinWithFacebook,
+    signinWithEmail,
     signout
   };
 }

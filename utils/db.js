@@ -8,7 +8,3 @@ export function createUser(uid, data) {
     .doc(uid)
     .set({ uid, ...data }, { merge: true });
 }
-
-export function createSite(data) {
-  return firestore.collection('sites').add(data);
-}
