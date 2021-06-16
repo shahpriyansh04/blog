@@ -8,8 +8,19 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "10.x",
+    "@chakra-ui/icons": "^1.0.13",
+    "@chakra-ui/react": "^1.6.3",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@fontsource/open-sans": "^4.4.5",
+    "@fontsource/raleway": "^4.4.5",
+    "@fontsource/reem-kufi": "^4.4.5",
+    "@fontsource/roboto": "^4.4.5",
+    "firebase": "^8.6.7",
+    "framer-motion": "^4",
+    "next": "^11.0.0",
     "react": "17.x",
-    "react-dom": "17.x"
+    "react-dom": "17.x",
+    "react-icons": "^4.2.0"
   }
 }

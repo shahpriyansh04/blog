@@ -1,65 +1,76 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import { auth } from 'firebase';
+import Link from 'next/link';
+import { Flex, Button, Divider, Icon, Text, Code } from '@chakra-ui/react';
+import { useAuth } from '../utils/auth';
 
-export default function Home() {
+const Home = () => {
+  const auth = useAuth();
   return (
-    <div className={styles.container}>
+    <div className="container">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
+      <Flex
+        backgroundColor="#ffffff"
+        justifyContent="center"
+        flexDirection="column"
+        borderRadius={10}
+        border="red"
+        justifyContent="center"
+        alignItems="space-around"
+        color="black"
+      >
+        <Flex alignItems="space-around" justifyContent="space-between" m="25px">
+          <Flex ml="2rem" justifyContent="center" alignItems="center">
+            <Text fontWeight="bold" fontSize="4xl" color="black">
+              LOGO
+            </Text>
+          </Flex>
+          <Flex mt="1rem">
+            {/* <Link href="/"> */}
+            <Button
+              variant="ghost"
+              size="lg"
+              backgroundColor="#000000"
+              overflow="scroll"
+              color="#ffffff"
+              opacity={0.98}
+            >
+              LOGIN
+            </Button>
+            {/* </Link> */}
+            <Link href="/user/signup">
+              <Button
+                variant="outline"
+                size="lg"
+                backgroundColor="#000000"
+                color="#ffffff"
+                ml="1rem"
+              >
+                SIGNUP
+              </Button>
+            </Link>
+          </Flex>
+        </Flex>
+        <Divider borderColor="#000000" opacity={0.41} boxShadow={1} />
+        <Flex alignItems="center" justifyContent="center" mt="6rem">
+          <Text color="#000000">
+            Current user: <Code>{auth?.user ? auth.user.email : 'None'}</Code>
+          </Text>
+          <Button
+            onClick={(e) => {
+              auth.signout();
+            }}
           >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+            LOGOUT
+          </Button>
+        </Flex>
+        <Flex />
+      </Flex>
     </div>
-  )
-}
+  );
+};
+export default Home;
