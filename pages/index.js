@@ -35,17 +35,17 @@ const Home = () => {
               </Text>
             </Flex>
             <Flex mt="1rem">
-              {/* <Link href="/"> */}
-              <Button
-                variant="outline"
-                size="lg"
-                backgroundColor="#000000"
-                color="#ffffff"
-                ml="1rem"
-              >
-                LOGIN
-              </Button>
-              {/* </Link> */}
+              <Link href="/user/login">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  backgroundColor="#000000"
+                  color="#ffffff"
+                  ml="1rem"
+                >
+                  LOGIN
+                </Button>
+              </Link>
               <Link href="/user/signup">
                 <Button
                   variant="outline"

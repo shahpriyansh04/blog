@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
+
 import {
   AiOutlineGoogle,
   AiOutlineGithub,
@@ -23,127 +24,16 @@ import {
 } from '@chakra-ui/react';
 
 import { useAuth } from '../../utils/auth';
-const Signup = () => {
+
+const Login = () => {
   const auth = useAuth();
-  console.log(auth.user);
-  if (auth.user) {
-    Router.push('/user/');
-  }
-  const toast = useToast();
   const { isOpen, onToggle } = useDisclosure();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const signinWithGoogle = async () => {
-    startAuth();
-    try {
-      await auth
-        .signinWithGoogle()
-        .then(() => {
-          showToast('success', 'Account created');
-          Router.push('/user/');
-        })
-        .catch((error) => {
-          console.log(error.message);
-          showToast('info', 'Account with email already exists');
-        });
-    } finally {
-      endAuth();
-    }
-  };
-
-  const signinWithGithub = async () => {
-    startAuth();
-    try {
-      await auth
-        .signinWithGithub()
-        .then(() => {
-          showToast('success', 'Account created');
-          Router.push('/user/');
-        })
-
-        .catch((error) => {
-          console.log(error.message);
-          showToast('info', 'Account with email already exists');
-        });
-    } finally {
-      endAuth();
-    }
-  };
-
-  const signinWithEmail = async () => {
-    startAuth();
-    try {
-      await auth
-        .signinWithEmail(email, password)
-        .then(() => {
-          showToast('success', 'Account created');
-          Router.push('/user/');
-        })
-        .catch((error) => {
-          console.log(error.message);
-          showToast('info', 'Account with email already exists');
-        });
-    } finally {
-      endAuth();
-    }
-  };
-
-  const showToast = (status, message) => {
-    toast.closeAll();
-    toast({
-      title: message,
-      status: status,
-      duration: 4000,
-      isClosable: true
-    });
-  };
-
-  const startAuth = () => {
-    setIsSubmitting(true);
-  };
-  const endAuth = () => {
-    setIsSubmitting(false);
-    setEmail('');
-    setPassword('');
-  };
-
-  const validateUser = async () => {
-    if (email && password) {
-      if (validateEmail() && validatePassword()) {
-        signinWithEmail();
-      }
-    } else {
-      if (email || password) {
-        if (!email) {
-          showToast('error', 'Please enter email');
-        } else {
-          showToast('error', 'Please enter password');
-        }
-      } else {
-        showToast('info', 'Please enter all the details');
-      }
-    }
-  };
-  const validatePassword = () => {
-    if (!(password.length > 8)) {
-      showToast('error', 'Invalid password');
-    } else {
-      return true;
-    }
-  };
-  const validateEmail = () => {
-    const re = /^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i;
-    if (!re.test(email)) {
-      showToast('error', 'Invalid Email');
-    } else {
-      return true;
-    }
-    // re.test(email) ? true : showToast('error', 'Invalid Email');
-  };
-
+  if (auth.user) {
+    Router.push('/user/');
+  }
   return (
     <Flex color="black" flexDirection="column" backgroundColor="#ffffff">
       <ScaleFade in={true} initialScale={1.5}>
@@ -163,7 +53,8 @@ const Signup = () => {
               SIGNUP
             </Text>
             <Text>
-              Already have an account, <Link href="/user/login">Login</Link>
+              Dont have an account,{' '}
+              <Link href="/user/signup">Create a new one here</Link>
             </Text>
           </Stack>
 
@@ -179,11 +70,9 @@ const Signup = () => {
                 padding="2rem"
                 variant="outline"
                 border="3px solid"
-                isDisabled={isSubmitting}
                 borderColor="black"
                 display="flex"
                 borderRadius="0"
-                onClick={signinWithGoogle}
                 alignItems="center"
                 dropShadow={15}
               >
@@ -197,11 +86,9 @@ const Signup = () => {
                 padding="2rem"
                 variant="outline"
                 border="3px solid"
-                isDisabled={isSubmitting}
                 borderColor="black"
                 display="flex"
                 borderRadius="0"
-                onClick={signinWithGithub}
                 alignItems="center"
                 dropShadow={15}
               >
@@ -218,7 +105,6 @@ const Signup = () => {
                 borderColor="black"
                 display="flex"
                 borderRadius="0"
-                isDisabled={isSubmitting}
                 onClick={onToggle}
                 alignItems="center"
                 dropShadow={15}
@@ -254,7 +140,6 @@ const Signup = () => {
                     <Input
                       placeholder="PASSWORD"
                       mb="1.5rem"
-                      isDisabled={isSubmitting}
                       value={password}
                       onChange={(e) => {
                         setPassword(e.target.value);
@@ -268,7 +153,6 @@ const Signup = () => {
                       borderColor="black"
                       width="9rem"
                       type="submit"
-                      onClick={validateUser}
                       display="flex"
                       isDisabled={isSubmitting}
                       alignItems="center"
@@ -282,10 +166,16 @@ const Signup = () => {
               </Collapse>
             </Stack>
           </Stack>
+          {/* <Stack justifyContent="center" alignItems="center" direction="column">
+            <form onSubmit={handleUpload}>
+              <input type="file" onChange={handleChange} />
+              <button disabled={!file}>upload to firebase</button>
+            </form>
+          </Stack> */}
         </Stack>
       </ScaleFade>
     </Flex>
   );
 };
 
-export default Signup;
+export default Login;

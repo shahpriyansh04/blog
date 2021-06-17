@@ -18,7 +18,7 @@ function useProvideAuth() {
   const handleUser = (rawUser) => {
     if (rawUser) {
       const newUser = formatUser(rawUser);
-      createUser(user.uid, newUser);
+      // createUser(user.uid, newUser);
       setUser(newUser);
       return user;
     } else {
@@ -88,6 +88,7 @@ function useProvideAuth() {
 const formatUser = (user) => {
   return {
     uid: user.uid,
+    username: '1',
     email: user.email,
     provider: user.providerData[0].providerId,
     photoUrl: user.photoURL
