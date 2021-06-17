@@ -37,12 +37,11 @@ const Home = () => {
             <Flex mt="1rem">
               {/* <Link href="/"> */}
               <Button
-                variant="ghost"
+                variant="outline"
                 size="lg"
                 backgroundColor="#000000"
-                overflow="scroll"
                 color="#ffffff"
-                opacity={0.98}
+                ml="1rem"
               >
                 LOGIN
               </Button>
