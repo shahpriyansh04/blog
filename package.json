@@ -25,6 +25,7 @@
     "react": "17.x",
     "react-dom": "17.x",
     "react-icons": "^4.2.0",
-    "swr": "^0.5.6"
+    "swr": "^0.5.6",
+    "webpack-node-externals": "^3.0.0"
   }
 }
