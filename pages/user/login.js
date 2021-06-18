@@ -83,7 +83,7 @@ const Login = () => {
           </Link>
           <Stack spacing={2} mb="6rem" alignItems="center">
             <Text fontWeight="bold" fontSize="3xl">
-              SIGNUP
+              LOGIN
             </Text>
             <Text>
               Dont have an account,{' '}
