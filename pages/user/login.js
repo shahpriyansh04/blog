@@ -27,6 +27,7 @@ import { useAuth } from '../../utils/auth';
 
 const Login = () => {
   const auth = useAuth();
+  const toast = useToast();
   const { isOpen, onToggle } = useDisclosure();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,11 +37,12 @@ const Login = () => {
   }
 
   const signinWithGoogle = async () => {
+    startAuth();
     try {
       await auth
         .signinWithGoogle()
         .then(() => {
-          // showToast('success', 'Account created');
+          showToast('success', 'Account created');
           Router.push('/user/');
         })
         .catch((error) => {
@@ -48,25 +50,62 @@ const Login = () => {
           showToast('info', 'Account with email already exists');
         });
     } finally {
+      endAuth();
     }
   };
   const signinWithGithub = async () => {
+    startAuth();
     try {
       await auth
         .signinWithGithub()
         .then(() => {
-          // showToast('success', 'Account created');
+          showToast('success', 'Account created');
           Router.push('/user/');
         })
 
         .catch((error) => {
           console.log(error.message);
-          // showToast('info', 'Account with email already exists');
+          showToast('info', 'Account with email already exists');
         });
     } finally {
+      endAuth();
     }
   };
 
+  const signinWithEmail = async () => {
+    startAuth();
+    try {
+      await auth
+        .signinWithEmail(email, password)
+        .then(() => {
+          Router.push('/user/');
+        })
+        .catch((error) => {
+          console.log(error.message);
+          showToast('info', 'Account with email already exists');
+        });
+    } finally {
+      endAuth();
+    }
+  };
+  const showToast = (status, message) => {
+    toast.closeAll();
+    toast({
+      title: message,
+      status: status,
+      duration: 4000,
+      isClosable: true
+    });
+  };
+
+  const startAuth = () => {
+    setIsSubmitting(true);
+  };
+  const endAuth = () => {
+    setIsSubmitting(false);
+    setEmail('');
+    setPassword('');
+  };
   return (
     <Flex color="black" flexDirection="column" backgroundColor="#ffffff">
       <ScaleFade in={true} initialScale={1.5}>
@@ -106,6 +145,7 @@ const Login = () => {
                 borderColor="black"
                 display="flex"
                 borderRadius="0"
+                isDisabled={isSubmitting}
                 onClick={signinWithGoogle}
                 alignItems="center"
                 dropShadow={15}
@@ -122,6 +162,7 @@ const Login = () => {
                 border="3px solid"
                 borderColor="black"
                 display="flex"
+                isDisabled={isSubmitting}
                 onClick={signinWithGithub}
                 borderRadius="0"
                 alignItems="center"
@@ -141,6 +182,7 @@ const Login = () => {
                 display="flex"
                 borderRadius="0"
                 onClick={onToggle}
+                isDisabled={isSubmitting}
                 alignItems="center"
                 dropShadow={15}
               >
@@ -176,6 +218,7 @@ const Login = () => {
                       placeholder="PASSWORD"
                       mb="1.5rem"
                       value={password}
+                      isDisabled={isSubmitting}
                       onChange={(e) => {
                         setPassword(e.target.value);
                       }}
@@ -190,6 +233,7 @@ const Login = () => {
                       type="submit"
                       display="flex"
                       isDisabled={isSubmitting}
+                      onClick={signinWithEmail}
                       alignItems="center"
                       justifyContent="center"
                     >

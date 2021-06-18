@@ -7,8 +7,10 @@ import {
   Button,
   Tabs,
   Tab,
+  Box,
   TabList,
   TabPanels,
+  ScaleFade,
   TabPanel
 } from '@chakra-ui/react';
 
@@ -18,35 +20,57 @@ const User = () => {
     Router.push('/user/login');
   }
   return (
-    <Flex flexDirection="column" backgroundColor="#ffffff">
-      <Stack spacing={2} justifyContent="center" alignItems="center" mt="5rem">
-        <Heading mb="3rem" fontSize="7xl">
-          LOGO
-        </Heading>
-        <Button
-          onClick={(e) => {
-            auth.signout();
-          }}
+    <Flex
+      flexDirection="column"
+      backgroundColor="#ffffff"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <ScaleFade in={true} initialScale={1.5}>
+        <Stack
+          spacing={2}
+          justifyContent="center"
+          alignItems="center"
+          mt="5rem"
         >
-          LOGOUT
-        </Button>
-        <Stack spacing={5}>
-          <Tabs colorScheme="black" isFitted variant="enclosed" isLazy>
-            <TabList mb="1em" p="2rem">
-              <Tab>Your Posts</Tab>
-              <Tab>Account</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <p>one!</p>
-              </TabPanel>
-              <TabPanel>
-                <p>two!</p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+          <Heading mb="3rem" fontSize="7xl">
+            LOGO
+          </Heading>
+          <Button
+            onClick={(e) => {
+              auth.signout();
+            }}
+          >
+            LOGOUT
+          </Button>
+          <Flex>
+            <Tabs
+              align="center"
+              colorScheme="black"
+              isFitted
+              size="lg"
+              mt="2rem"
+              variant="enclosed"
+              isLazy
+            >
+              <TabList mb="1em" p="2rem">
+                <Tab>Your Posts</Tab>
+                <Tab>Account</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <Stack justifyContent="center">
+                    <Box>No Posts Created</Box>
+                  </Stack>
+                </TabPanel>
+                <TabPanel>
+                  <p>two!</p>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Flex>
         </Stack>
-      </Stack>
+      </ScaleFade>
     </Flex>
   );
 };

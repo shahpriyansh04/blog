@@ -25,7 +25,6 @@ import {
 import { useAuth } from '../../utils/auth';
 const Signup = () => {
   const auth = useAuth();
-  console.log(auth.user);
   if (auth.user) {
     Router.push('/user/');
   }
@@ -73,11 +72,11 @@ const Signup = () => {
     }
   };
 
-  const signinWithEmail = async () => {
+  const signupWithEmail = async () => {
     startAuth();
     try {
       await auth
-        .signinWithEmail(email, password)
+        .signupWithEmail(email, password)
         .then(() => {
           showToast('success', 'Account created');
           Router.push('/user/');
@@ -113,7 +112,7 @@ const Signup = () => {
   const validateUser = async () => {
     if (email && password) {
       if (validateEmail() && validatePassword()) {
-        signinWithEmail();
+        signupWithEmail();
       }
     } else {
       if (email || password) {
@@ -128,7 +127,7 @@ const Signup = () => {
     }
   };
   const validatePassword = () => {
-    if (!(password.length > 8)) {
+    if (!(password.length >= 8)) {
       showToast('error', 'Invalid password');
     } else {
       return true;

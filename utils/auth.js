@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import firebase from './firebase';
 import { createUser } from './db';
-
+import axios from 'axios';
 const authContext = createContext();
 
 export function ProvideAuth({ children }) {
@@ -12,13 +12,23 @@ export function ProvideAuth({ children }) {
 export const useAuth = () => {
   return useContext(authContext);
 };
-
+const doesUserExist = async (email) => {
+  const response = await axios
+    .get('/api/users/', { params: { email: email } })
+    .then((response) => {
+      console.log(response.data);
+    });
+  console.log(response);
+};
 function useProvideAuth() {
   const [user, setUser] = useState(null);
   const handleUser = (rawUser) => {
     if (rawUser) {
       const newUser = formatUser(rawUser);
-      // createUser(user.uid, newUser);
+      if (!doesUserExist(newUser.email)) {
+        createUser(user.uid, newUser);
+      }
+
       setUser(newUser);
       return user;
     } else {
@@ -39,12 +49,21 @@ function useProvideAuth() {
       });
   };
 
-  const signinWithEmail = (email, password) => {
+  const signupWithEmail = (email, password) => {
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
         handleUser(response.user);
+      });
+  };
+
+  const signinWithEmail = (email, password) => {
+    return firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((response) => {
+        setUser(response.user);
       });
   };
 
@@ -81,6 +100,7 @@ function useProvideAuth() {
     user,
     signinWithGithub,
     signinWithGoogle,
+    signupWithEmail,
     signinWithEmail,
     signout
   };
