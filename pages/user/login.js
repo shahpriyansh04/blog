@@ -34,6 +34,39 @@ const Login = () => {
   if (auth.user) {
     Router.push('/user/');
   }
+
+  const signinWithGoogle = async () => {
+    try {
+      await auth
+        .signinWithGoogle()
+        .then(() => {
+          // showToast('success', 'Account created');
+          Router.push('/user/');
+        })
+        .catch((error) => {
+          console.log(error.message);
+          showToast('info', 'Account with email already exists');
+        });
+    } finally {
+    }
+  };
+  const signinWithGithub = async () => {
+    try {
+      await auth
+        .signinWithGithub()
+        .then(() => {
+          // showToast('success', 'Account created');
+          Router.push('/user/');
+        })
+
+        .catch((error) => {
+          console.log(error.message);
+          // showToast('info', 'Account with email already exists');
+        });
+    } finally {
+    }
+  };
+
   return (
     <Flex color="black" flexDirection="column" backgroundColor="#ffffff">
       <ScaleFade in={true} initialScale={1.5}>
@@ -73,6 +106,7 @@ const Login = () => {
                 borderColor="black"
                 display="flex"
                 borderRadius="0"
+                onClick={signinWithGoogle}
                 alignItems="center"
                 dropShadow={15}
               >
@@ -88,6 +122,7 @@ const Login = () => {
                 border="3px solid"
                 borderColor="black"
                 display="flex"
+                onClick={signinWithGithub}
                 borderRadius="0"
                 alignItems="center"
                 dropShadow={15}
