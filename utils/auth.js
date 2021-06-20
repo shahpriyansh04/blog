@@ -14,7 +14,9 @@ export const useAuth = () => {
 };
 const doesUserExist = async (email) => {
   const response = await axios
-    .get('/api/users/', { params: { email: email } })
+    .get('https://ancient-escarpment-14988.herokuapp.com/users', {
+      params: { email: email }
+    })
     .then((response) => {
       console.log(response.data);
     });

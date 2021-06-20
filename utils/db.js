@@ -9,9 +9,11 @@ export function createUser(uid, data) {
     .set({ uid, ...data }, { merge: true });
 }
 
-export function createPost(uid, data) {
+export function createPost(title, description, uid) {
   return firestore
     .collection('posts')
-    .doc(uid)
-    .set({ uid, ...data }, { merge: true });
+    .add({ title: title, description: description, userID: uid })
+    .then(() => {
+      console.log('SUCCESS');
+    });
 }
