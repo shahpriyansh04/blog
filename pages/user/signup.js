@@ -45,7 +45,6 @@ const Signup = () => {
           Router.push('/user/');
         })
         .catch((error) => {
-          console.log(error.message);
           showToast('info', 'Account with email already exists');
         });
     } finally {
@@ -64,7 +63,6 @@ const Signup = () => {
         })
 
         .catch((error) => {
-          console.log(error.message);
           showToast('info', 'Account with email already exists');
         });
     } finally {
@@ -82,7 +80,6 @@ const Signup = () => {
           Router.push('/user/');
         })
         .catch((error) => {
-          console.log(error.message);
           showToast('info', 'Account with email already exists');
         });
     } finally {
@@ -177,7 +174,6 @@ const Signup = () => {
                 border="3px solid"
                 padding="2rem"
                 variant="outline"
-                border="3px solid"
                 isDisabled={isSubmitting}
                 borderColor="black"
                 display="flex"

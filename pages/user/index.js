@@ -1,10 +1,12 @@
 import { useAuth } from '../../utils/auth';
 import Router from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Flex,
   Stack,
   Heading,
+  BeatLoader,
   Button,
   Tabs,
   Tab,
@@ -17,7 +19,8 @@ import {
   ScaleFade,
   TabPanel,
   Input,
-  Textarea
+  Textarea,
+  Divider
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import {
@@ -30,13 +33,17 @@ import {
   ModalCloseButton
 } from '@chakra-ui/react';
 import { createPost } from '../../utils/db';
+import Link from 'next/link';
 const User = () => {
   const auth = useAuth();
+
   const toast = useToast();
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isPostSubmitting, setIsPostSubmitting] = useState(false);
+
   if (auth.user == false) {
     Router.push('/user/login');
   }
@@ -45,14 +52,52 @@ const User = () => {
     toast.closeAll();
     toast({
       title: message,
+      size: 'md',
       status: status,
       duration: 4000,
       isClosable: true
     });
   };
 
+  const getUserPosts = async () => {
+    try {
+      const userPosts = await axios
+        .get('http://localhost:8080/user/posts', {
+          params: {
+            userID: auth.user.uid
+          }
+        })
+        .then((response) => {
+          setPosts(response.data);
+          log(posts);
+        });
+    } finally {
+    }
+  };
+
   const createNewPost = () => {
-    createPost(title, description, auth.user.uid);
+    createPost(title, description, auth.user.uid).then(() => {
+      setIsPostSubmitting(false);
+      onClose();
+      setTitle('');
+      setDescription('');
+      showToast('success', 'Successfully created Post');
+    });
+  };
+
+  const validatePost = () => {
+    if (title && description) {
+      setIsPostSubmitting(true);
+      createNewPost();
+    } else {
+      if (!title) {
+        showToast('error', 'Please enter a title');
+      } else if (!description) {
+        showToast('error', 'Please enter a description');
+      } else {
+        showToast('error', 'Please enter all the details');
+      }
+    }
   };
 
   return (
@@ -99,9 +144,33 @@ const User = () => {
               <TabPanels>
                 <TabPanel>
                   <Stack justifyContent="center">
-                    {posts && (
-                      <Skeleton height="20px" width="20px" size="lg"></Skeleton>
-                    )}
+                    {posts &&
+                      posts.map((post) => {
+                        return (
+                          <Link href={'/post/' + post.id}>
+                            <Stack spacing={4}>
+                              <Flex
+                                flexDirection="row"
+                                backgroundColor="#ffffff"
+                                justifyContent="center"
+                                border="2px solid"
+                                alignItems="stretch"
+                              >
+                                <Stack spacing={2}>
+                                  <Flex flexDirection="column">
+                                    <Text fontSize="3xl">{post.title}</Text>
+                                    <Divider borderColor="blackAlpha.500" />
+                                    <Text p="2.5rem" fontSize="xl">
+                                      {post.description}
+                                    </Text>
+                                  </Flex>
+                                </Stack>
+                              </Flex>
+                            </Stack>
+                          </Link>
+                        );
+                      })}
+
                     <Box>
                       <Text>No Posts Created</Text>
                       <Button
@@ -111,6 +180,8 @@ const User = () => {
                       >
                         + Add One
                       </Button>
+                      <Button onClick={getUserPosts}>Get User Posts</Button>
+
                       <Modal onClose={onClose} isOpen={isOpen} isCentered>
                         <ModalOverlay />
                         <ModalContent>
@@ -120,7 +191,12 @@ const User = () => {
                             <Input
                               mb="2rem"
                               type="text"
+                              pt="0.5rem"
+                              fontSize="1.5rem"
                               colorScheme="black"
+                              justifyContent="center"
+                              alignItems="center"
+                              isDisabled={isPostSubmitting}
                               onChange={(e) => {
                                 setTitle(e.target.value);
                               }}
@@ -129,6 +205,7 @@ const User = () => {
                             <Textarea
                               placeholder="Description"
                               colorScheme="black"
+                              isDisabled={isPostSubmitting}
                               onChange={(e) => {
                                 setDescription(e.target.value);
                               }}
@@ -138,8 +215,11 @@ const User = () => {
                             <Button
                               variant="outline"
                               mr="1rem"
+                              p="1rem"
                               colorScheme="black"
-                              onClick={createNewPost}
+                              isLoading={isPostSubmitting}
+                              loadingText="Posting"
+                              onClick={validatePost}
                             >
                               POST
                             </Button>

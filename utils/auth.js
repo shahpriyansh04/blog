@@ -27,9 +27,9 @@ function useProvideAuth() {
   const handleUser = (rawUser) => {
     if (rawUser) {
       const newUser = formatUser(rawUser);
-      if (!doesUserExist(newUser.email)) {
-        createUser(user.uid, newUser);
-      }
+      // if (!doesUserExist(newUser.email)) {
+      createUser(user.uid, newUser);
+      // }
 
       setUser(newUser);
       return user;

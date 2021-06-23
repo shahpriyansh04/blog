@@ -46,7 +46,6 @@ const Login = () => {
           Router.push('/user/');
         })
         .catch((error) => {
-          console.log(error.message);
           showToast('info', 'Account with email already exists');
         });
     } finally {
@@ -64,7 +63,6 @@ const Login = () => {
         })
 
         .catch((error) => {
-          console.log(error.message);
           showToast('info', 'Account with email already exists');
         });
     } finally {
@@ -81,7 +79,6 @@ const Login = () => {
           Router.push('/user/');
         })
         .catch((error) => {
-          console.log(error.message);
           showToast('info', 'Account with email already exists');
         });
     } finally {
