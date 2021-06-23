@@ -62,7 +62,7 @@ const User = () => {
   const getUserPosts = async () => {
     try {
       const userPosts = await axios
-        .get('https://ancient-escarpment-14988.herokuapp.com//user/posts', {
+        .get('https://ancient-escarpment-14988.herokuapp.com/user/posts', {
           params: {
             userID: auth.user.uid
           }
